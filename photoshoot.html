@@ -54,19 +54,36 @@
       font-weight: bold;
     }
 
-    button.checkout-btn {
+    .checkout-area {
       margin-top: 30px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .checkout-area button {
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #000;
-      color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
+    .checkout-btn {
+      background-color: #000;
+      color: white;
+    }
+
+    .cancel-btn {
+      background-color: #ccc;
+      color: #000;
+    }
+
     .checkout-list {
       margin-top: 30px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -76,16 +93,6 @@
 <p>Pilih jumlah foto yang kamu mau!</p>
 
 <div class="gallery">
-  <div class="photo-card">
-    <img src="k.jpeg" alt="Karina">
-    <div><strong>Karina</strong></div>
-    <div class="counter">
-      <button class="minus" data-id="karina">-</button>
-      <span id="qty-karina" class="qty-display">0</span>
-      <button class="plus" data-id="karina">+</button>
-    </div>
-  </div>
-
   <div class="photo-card">
     <img src="w.jpeg" alt="Winter">
     <div><strong>Winter</strong></div>
@@ -97,12 +104,12 @@
   </div>
 
   <div class="photo-card">
-    <img src="n.jpeg" alt="Ningning">
-    <div><strong>Ningning</strong></div>
+    <img src="k.jpeg" alt="Karina">
+    <div><strong>Karina</strong></div>
     <div class="counter">
-      <button class="minus" data-id="ningning">-</button>
-      <span id="qty-ningning" class="qty-display">0</span>
-      <button class="plus" data-id="ningning">+</button>
+      <button class="minus" data-id="karina">-</button>
+      <span id="qty-karina" class="qty-display">0</span>
+      <button class="plus" data-id="karina">+</button>
     </div>
   </div>
 
@@ -115,21 +122,34 @@
       <button class="plus" data-id="giselle">+</button>
     </div>
   </div>
-  
+
+  <div class="photo-card">
+    <img src="n.jpeg" alt="Ningning">
+    <div><strong>Ningning</strong></div>
+    <div class="counter">
+      <button class="minus" data-id="ningning">-</button>
+      <span id="qty-ningning" class="qty-display">0</span>
+      <button class="plus" data-id="ningning">+</button>
+    </div>
+  </div>
 </div>
 
-<button class="checkout-btn" onclick="checkout()">Checkout</button>
+<div class="checkout-area">
+  <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  <button class="cancel-btn" onclick="cancelCheckout()">Batal Checkout</button>
+</div>
 
 <div class="checkout-list" id="checkoutList"></div>
 
 <script>
   const quantities = {
-    karina: 0,
     winter: 0,
-    ningning: 0,
-    giselle: 0
+    karina: 0,
+    giselle: 0,
+    ningning: 0
   }
 
+  // Tombol tambah
   document.querySelectorAll('.plus').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id
@@ -138,6 +158,7 @@
     })
   })
 
+  // Tombol kurang
   document.querySelectorAll('.minus').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.id
@@ -148,22 +169,33 @@
     })
   })
 
+  // Tombol Checkout
   function checkout() {
     const list = document.getElementById('checkoutList')
     list.innerHTML = '<h2>Checkout:</h2>'
+    let any = false
 
-    let selected = false
-
-    for (const key in quantities) {
-      if (quantities[key] > 0) {
-        selected = true
-        list.innerHTML += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}</strong> — ${quantities[key]} pcs</p>`
+    for (const id in quantities) {
+      if (quantities[id] > 0) {
+        const name = id.charAt(0).toUpperCase() + id.slice(1)
+        list.innerHTML += `<p><strong>${name}</strong> — ${quantities[id]} pcs</p>`
+        any = true
       }
     }
 
-    if (!selected) {
-      list.innerHTML += `<p>Kamu belum pilih apa-apa loh!!</p>`
+    if (!any) {
+      list.innerHTML += '<p>Kamu belum pilih apa-apa loh!!</p>'
     }
+  }
+
+  // Tombol Batal Checkout
+  function cancelCheckout() {
+    for (const id in quantities) {
+      quantities[id] = 0
+      document.getElementById(`qty-${id}`).textContent = '0'
+    }
+
+    document.getElementById('checkoutList').innerHTML = ''
   }
 </script>
 
