@@ -7,116 +7,165 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f2f2f2;
+      background-color: #f5f5f5;
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
     }
 
     .photo-card {
       background: white;
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
+      padding: 15px;
+      border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
-    .photo-card img {
+    img {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
     }
 
-    .photo-name {
-      margin-top: 8px;
+    .counter {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .counter button {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      border: none;
+      background-color: #222;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .qty-display {
+      min-width: 30px;
+      text-align: center;
       font-weight: bold;
     }
 
-    .checkout-area {
+    button.checkout-btn {
       margin-top: 30px;
-    }
-
-    button {
       padding: 10px 20px;
-      background-color: #333;
+      font-size: 16px;
+      background-color: #000;
       color: white;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
-    .selected-list {
-      margin-top: 20px;
-    }
-
-    .selected-list img {
-      width: 100px;
-      margin-right: 10px;
+    .checkout-list {
+      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Photoshoot æspa 📸</h1>
-  <p>Pilih foto favoritmu lalu checkout!</p>
+<h1>Photoshoot æspa 📸</h1>
+<p>Pilih jumlah foto yang kamu mau!</p>
 
-  <form id="photoForm">
-    <div class="gallery">
-      <div class="photo-card">
-        <img src="k.jpeg" alt="Karina">
-        <div class="photo-name">Karina</div>
-        <input type="checkbox" name="photos" value="karina.jpg"> Pilih
-      </div>
-      <div class="photo-card">
-        <img src="w.jpeg" alt="Winter">
-        <div class="photo-name">Winter</div>
-        <input type="checkbox" name="photos" value="winter.jpg"> Pilih
-      </div>
-      <div class="photo-card">
-        <img src="g.jpeg" alt="Giselle">
-        <div class="photo-name">Giselle</div>
-        <input type="checkbox" name="photos" value="giselle.jpg"> Pilih
-      </div>
-      <div class="photo-card">
-        <img src="n.jpeg" alt="Ningning">
-        <div class="photo-name">Ningning</div>
-        <input type="checkbox" name="photos" value="ningning.jpg"> Pilih
-      </div>
+<div class="gallery">
+  <div class="photo-card">
+    <img src="k.jpeg" alt="Karina">
+    <div><strong>Karina</strong></div>
+    <div class="counter">
+      <button class="minus" data-id="karina">-</button>
+      <span id="qty-karina" class="qty-display">0</span>
+      <button class="plus" data-id="karina">+</button>
     </div>
+  </div>
 
-    <div class="checkout-area">
-      <button type="submit">Checkout</button>
+  <div class="photo-card">
+    <img src="w.jpeg" alt="Winter">
+    <div><strong>Winter</strong></div>
+    <div class="counter">
+      <button class="minus" data-id="winter">-</button>
+      <span id="qty-winter" class="qty-display">0</span>
+      <button class="plus" data-id="winter">+</button>
     </div>
-  </form>
+  </div>
 
-  <div class="selected-list" id="selectedList"></div>
+  <div class="photo-card">
+    <img src="n.jpeg" alt="Ningning">
+    <div><strong>Ningning</strong></div>
+    <div class="counter">
+      <button class="minus" data-id="ningning">-</button>
+      <span id="qty-ningning" class="qty-display">0</span>
+      <button class="plus" data-id="ningning">+</button>
+    </div>
+  </div>
 
-  <script>
-    const form = document.getElementById('photoForm');
-    const selectedList = document.getElementById('selectedList');
+  <div class="photo-card">
+    <img src="g.jpeg" alt="Giselle">
+    <div><strong>Giselle</strong></div>
+    <div class="counter">
+      <button class="minus" data-id="giselle">-</button>
+      <span id="qty-giselle" class="qty-display">0</span>
+      <button class="plus" data-id="giselle">+</button>
+    </div>
+  </div>
+  
+</div>
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
+<button class="checkout-btn" onclick="checkout()">Checkout</button>
 
-      selectedList.innerHTML = '<h2>Foto yang kamu pilih:</h2>';
+<div class="checkout-list" id="checkoutList"></div>
 
-      const selectedPhotos = document.querySelectorAll('input[name="photos"]:checked');
+<script>
+  const quantities = {
+    karina: 0,
+    winter: 0,
+    ningning: 0,
+    giselle: 0
+  }
 
-      if (selectedPhotos.length === 0) {
-        selectedList.innerHTML += '<p>Kamu belum memilih foto apapun </p>';
-        return;
+  document.querySelectorAll('.plus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id
+      quantities[id]++
+      document.getElementById(`qty-${id}`).textContent = quantities[id]
+    })
+  })
+
+  document.querySelectorAll('.minus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.id
+      if (quantities[id] > 0) {
+        quantities[id]--
+        document.getElementById(`qty-${id}`).textContent = quantities[id]
       }
+    })
+  })
 
-      selectedPhotos.forEach(photo => {
-        const img = document.createElement('img');
-        img.src = photo.value;
-        img.alt = photo.value;
-        selectedList.appendChild(img);
-      });
-    });
-  </script>
+  function checkout() {
+    const list = document.getElementById('checkoutList')
+    list.innerHTML = '<h2>Checkout:</h2>'
+
+    let selected = false
+
+    for (const key in quantities) {
+      if (quantities[key] > 0) {
+        selected = true
+        list.innerHTML += `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}</strong> — ${quantities[key]} pcs</p>`
+      }
+    }
+
+    if (!selected) {
+      list.innerHTML += `<p>Kamu belum pilih apa-apa loh!!</p>`
+    }
+  }
+</script>
 
 </body>
 </html>
