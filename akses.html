@@ -25,6 +25,14 @@
 
 
     <button id="loginBtn">Photoshoot</button>
+    <div id="photoshoot-section" class="content-card" style="display: none;">
+  <h2>Photoshoot Gallery</h2>
+  <div class="gallery">
+    <img src="foto1.jpg" alt="Photoshoot 1" style="width: 200px;" />
+    <img src="foto2.jpg" alt="Photoshoot 2" style="width: 200px;" />
+  </div>
+</div>
+
 <button id="logoutBtn">Logout</button>
 
   </div>
@@ -116,9 +124,12 @@ async function loadData() {
 }
 
 
-document.getElementById('loginBtn').addEventListener('click', login)
+document.getElementById('loginBtn').addEventListener('click', showPhotoshoot)
 document.getElementById('logoutBtn').addEventListener('click', logout)
-
+  function showPhotoshoot() {
+  document.getElementById('photoshoot-section').style.display = 'block'
+  content.innerHTML = '' // Kalau mau kosongin bagian data login
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
   const { data: { user } } = await supabase.auth.getUser()
