@@ -24,7 +24,7 @@
   <div class="action-buttons">
 
 
-    <button id="loginBtn">Photoshoot</button>
+    <button id="PhotoshootBtn">Photoshoot</button>
 <button id="logoutBtn">Logout</button>
 
   </div>
@@ -41,8 +41,8 @@
   <div class="content-card">
     <h3 style="font-size: 28px;"><strong>Sosial Media</strong></h3>
     <ul>
-      <li><strong>instagram :</strong> http://instagram.com/vvisill</li>
-      <li><strong>credly :</strong> https://www.credly.com/users/silvyafr</li>
+      <li><strong>instagram :</strong> http://instagram.com/aespa_official</li>
+      <li><strong>twitter :</strong> https://www.x.com/aespa_official</li>
     </ul>
   </div>
 </div>
@@ -116,7 +116,7 @@ async function loadData() {
 }
 
 
-document.getElementById('loginBtn').addEventListener('click', login)
+document.getElementById('photoshootBtn').addEventListener('click', () => {window.location.href = 'photoshoot.html'})
 document.getElementById('logoutBtn').addEventListener('click', logout)
 
 
