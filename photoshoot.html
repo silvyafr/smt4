@@ -7,53 +7,116 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      background-color: #f7f7f7;
+      background-color: #f2f2f2;
     }
+
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
     }
+
     .photo-card {
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
       padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+
     .photo-card img {
       width: 100%;
       border-radius: 8px;
     }
+
     .photo-name {
       margin-top: 8px;
       font-weight: bold;
+    }
+
+    .checkout-area {
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .selected-list {
+      margin-top: 20px;
+    }
+
+    .selected-list img {
+      width: 100px;
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
 
   <h1>Photoshoot æspa 📸</h1>
-  <p>Galeri eksklusif Karina, Winter, Giselle, dan Ningning ✨</p>
+  <p>Pilih foto favoritmu lalu checkout!</p>
 
-  <div class="gallery">
-    <div class="photo-card">
-      <img src="k.jpeg" alt="Karina">
-      <div class="photo-name">Karina</div>
+  <form id="photoForm">
+    <div class="gallery">
+      <div class="photo-card">
+        <img src="k.jpeg" alt="Karina">
+        <div class="photo-name">Karina</div>
+        <input type="checkbox" name="photos" value="karina.jpg"> Pilih
+      </div>
+      <div class="photo-card">
+        <img src="w.jpeg" alt="Winter">
+        <div class="photo-name">Winter</div>
+        <input type="checkbox" name="photos" value="winter.jpg"> Pilih
+      </div>
+      <div class="photo-card">
+        <img src="g.jpeg" alt="Giselle">
+        <div class="photo-name">Giselle</div>
+        <input type="checkbox" name="photos" value="giselle.jpg"> Pilih
+      </div>
+      <div class="photo-card">
+        <img src="n.jpeg" alt="Ningning">
+        <div class="photo-name">Ningning</div>
+        <input type="checkbox" name="photos" value="ningning.jpg"> Pilih
+      </div>
     </div>
-    <div class="photo-card">
-      <img src="w.jpeg" alt="Winter">
-      <div class="photo-name">Winter</div>
+
+    <div class="checkout-area">
+      <button type="submit">Checkout</button>
     </div>
-    <div class="photo-card">
-      <img src="g.jpeg" alt="Giselle">
-      <div class="photo-name">Giselle</div>
-    </div>
-    <div class="photo-card">
-      <img src="n.jpeg" alt="Ningning">
-      <div class="photo-name">Ningning</div>
-    </div>
-  </div>
+  </form>
+
+  <div class="selected-list" id="selectedList"></div>
+
+  <script>
+    const form = document.getElementById('photoForm');
+    const selectedList = document.getElementById('selectedList');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      selectedList.innerHTML = '<h2>Foto yang kamu pilih:</h2>';
+
+      const selectedPhotos = document.querySelectorAll('input[name="photos"]:checked');
+
+      if (selectedPhotos.length === 0) {
+        selectedList.innerHTML += '<p>Kamu belum memilih foto apapun </p>';
+        return;
+      }
+
+      selectedPhotos.forEach(photo => {
+        const img = document.createElement('img');
+        img.src = photo.value;
+        img.alt = photo.value;
+        selectedList.appendChild(img);
+      });
+    });
+  </script>
 
 </body>
 </html>
