@@ -128,7 +128,15 @@ document.getElementById('loginBtn').addEventListener('click', showPhotoshoot)
 document.getElementById('logoutBtn').addEventListener('click', logout)
   function showPhotoshoot() {
   document.getElementById('photoshoot-section').style.display = 'block'
-  content.innerHTML = '' // Kalau mau kosongin bagian data login
+  content.innerHTML = 
+  <h2>Photoshoot Gallery</h2>
+  <div class="gallery">
+    <img src="foto1.jpg" alt="Photoshoot 1" style="width: 200px;" />
+    <img src="foto2.jpg" alt="Photoshoot 2" style="width: 200px;" />
+  </div>
+content.innerHTML =
+  <button onclick="window.location.reload()">Kembali</button>
+
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
